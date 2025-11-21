@@ -9,6 +9,7 @@ export interface Group {
   baseCurrency: string;
   members: Member[];
   createdAt: string;
+  ownerId: string;
 }
 
 export interface Expense {
@@ -41,7 +42,8 @@ export interface Settlement {
 }
 
 export interface ExchangeRateResponse {
-  success: boolean;
+  result: string;
+  base_code: string;
   rates: {
     [key: string]: number;
   };

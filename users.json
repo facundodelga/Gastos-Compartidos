@@ -5,5 +5,26 @@
     "name": "juan doe",
     "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
     "createdAt": "2025-11-19T23:04:17.810Z"
+  },
+  {
+    "id": "710c79ba-5b9c-4d5c-ad54-7d604b5ab0cb",
+    "email": "giansanpedro@outlook.com",
+    "name": "Gianfranco San Pedro",
+    "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "createdAt": "2025-11-21T14:37:06.198Z"
+  },
+  {
+    "id": "0e4ac3ac-c156-4234-8297-eba49bfb810b",
+    "email": "test1@test1",
+    "name": "test1",
+    "password": "85777f270ad7cf2a790981bbae3c4e484a1dc55e24a77390d692fbf1cffa12fa",
+    "createdAt": "2025-11-21T15:21:43.327Z"
+  },
+  {
+    "id": "9142d9b8-8346-4928-a4c0-f506065dcd44",
+    "email": "test2@test2",
+    "name": "test2",
+    "password": "a6aaa967c8b53e6e22603472c946484c9b26440fe71db27d9c88b43bac2947be",
+    "createdAt": "2025-11-21T15:36:03.507Z"
   }
 ]

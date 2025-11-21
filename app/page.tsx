@@ -7,18 +7,29 @@ import { CreateGroupDialog } from '@/components/create-group-dialog';
 import { Wallet } from 'lucide-react';
 import { AuthGuard } from '@/components/auth-guard';
 import { Navbar } from '@/components/navbar';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function HomePage() {
+  const { user, loading: authLoading } = useAuth();
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadGroups();
-  }, []);
+    if (authLoading) {
+      return;
+    }
+    if (!user) {
+      setGroups([]);
+      setLoading(false);
+      return;
+    }
+    loadGroups(user.id);
+  }, [authLoading, user]);
 
-  const loadGroups = async () => {
+  const loadGroups = async (ownerId: string) => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/groups');
+      const response = await fetch(`/api/groups?ownerId=${ownerId}`);
       if (response.ok) {
         const data = await response.json();
         setGroups(data);
@@ -40,8 +51,8 @@ export default function HomePage() {
         body: JSON.stringify(group),
       });
       
-      if (response.ok) {
-        await loadGroups();
+      if (response.ok && user) {
+        await loadGroups(user.id);
       }
     } catch (error) {
       console.error('Error creating group:', error);
@@ -56,8 +67,8 @@ export default function HomePage() {
         method: 'DELETE',
       });
       
-      if (response.ok) {
-        await loadGroups();
+      if (response.ok && user) {
+        await loadGroups(user.id);
       }
     } catch (error) {
       console.error('Error deleting group:', error);

@@ -1,25 +1,20 @@
 import { NextResponse } from 'next/server';
 import { authService } from '@/lib/auth-service';
+import { registerPayloadSchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
   try {
     const { email, password, name } = await request.json();
+    const parsed = registerPayloadSchema.safeParse({ email, password, name });
 
-    if (!email || !password || !name) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { success: false, error: 'Email, contraseña y nombre son requeridos' },
+        { success: false, error: parsed.error.issues[0]?.message ?? 'Datos inválidos' },
         { status: 400 }
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { success: false, error: 'La contraseña debe tener al menos 6 caracteres' },
-        { status: 400 }
-      );
-    }
-
-    const result = authService.register(email, password, name);
+    const result = authService.register(parsed.data.email, parsed.data.password, parsed.data.name);
 
     if (result.success && result.user) {
       return NextResponse.json({ success: true, user: result.user });

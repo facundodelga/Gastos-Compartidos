@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, X } from 'lucide-react';
 import { Group, Member } from '@/types';
+import { useAuth } from '@/contexts/AuthContext';
+import { validateGroupFieldsAction } from '@/app/actions/form-validations';
 
 interface CreateGroupDialogProps {
   onCreateGroup: (group: Group) => void;
@@ -23,42 +25,61 @@ const CURRENCIES = [
 ];
 
 export function CreateGroupDialog({ onCreateGroup }: CreateGroupDialogProps) {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [baseCurrency, setBaseCurrency] = useState('USD');
   const [members, setMembers] = useState<Member[]>([]);
   const [newMemberName, setNewMemberName] = useState('');
+  const [formError, setFormError] = useState('');
 
   const handleAddMember = () => {
-    if (newMemberName.trim()) {
-      const newMember: Member = {
-        id: crypto.randomUUID(),
-        name: newMemberName.trim(),
-      };
-      setMembers([...members, newMember]);
-      setNewMemberName('');
+    const trimmedName = newMemberName.trim();
+    if (!trimmedName) return;
+    if (trimmedName.length > 30) {
+      setFormError('Los nombres de los miembros no pueden superar 30 caracteres');
+      return;
     }
+    const newMember: Member = {
+      id: crypto.randomUUID(),
+      name: trimmedName,
+    };
+    setMembers([...members, newMember]);
+    setNewMemberName('');
+    setFormError('');
   };
 
   const handleRemoveMember = (id: string) => {
     setMembers(members.filter(m => m.id !== id));
   };
 
-  const handleSubmit = () => {
-    if (groupName.trim() && members.length >= 2) {
-      const newGroup: Group = {
-        id: crypto.randomUUID(),
-        name: groupName.trim(),
-        baseCurrency,
-        members,
-        createdAt: new Date().toISOString(),
-      };
-      onCreateGroup(newGroup);
-      setOpen(false);
-      setGroupName('');
-      setBaseCurrency('USD');
-      setMembers([]);
+  const handleSubmit = async () => {
+    if (!user) return;
+    const trimmedName = groupName.trim();
+    const validation = await validateGroupFieldsAction({
+      name: trimmedName,
+      members,
+    });
+
+    if (!validation.success) {
+      setFormError(validation.error);
+      return;
     }
+
+    const newGroup: Group = {
+      id: crypto.randomUUID(),
+      name: trimmedName,
+      baseCurrency,
+      members,
+      createdAt: new Date().toISOString(),
+      ownerId: user.id,
+    };
+    onCreateGroup(newGroup);
+    setOpen(false);
+    setGroupName('');
+    setBaseCurrency('USD');
+    setMembers([]);
+    setFormError('');
   };
 
   return (
@@ -75,12 +96,18 @@ export function CreateGroupDialog({ onCreateGroup }: CreateGroupDialogProps) {
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
+            {formError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                {formError}
+              </div>
+            )}
             <Label htmlFor="group-name">Nombre del grupo</Label>
             <Input
               id="group-name"
               placeholder="Ej: Viaje a la playa"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
+              maxLength={30}
             />
           </div>
 
@@ -108,6 +135,7 @@ export function CreateGroupDialog({ onCreateGroup }: CreateGroupDialogProps) {
                 value={newMemberName}
                 onChange={(e) => setNewMemberName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAddMember()}
+                maxLength={30}
               />
               <Button type="button" onClick={handleAddMember} size="icon">
                 <Plus className="h-4 w-4" />
@@ -137,7 +165,7 @@ export function CreateGroupDialog({ onCreateGroup }: CreateGroupDialogProps) {
 
           <Button
             onClick={handleSubmit}
-            disabled={!groupName.trim() || members.length < 2}
+            disabled={!user || !groupName.trim() || members.length < 2}
             className="w-full"
           >
             Crear grupo

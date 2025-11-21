@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAllExpenses, getExpensesByGroupId, saveExpense, deleteExpense } from '@/lib/database';
+import { expenseSchema } from '@/lib/validations';
 
 export async function GET(request: Request) {
   try {
@@ -20,6 +21,18 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const expense = await request.json();
+    const parsed = expenseSchema.safeParse({
+      description: expense?.description,
+      amount: typeof expense?.amount === 'number' ? expense.amount : Number(expense?.amount),
+    });
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? 'Datos de gasto inválidos' },
+        { status: 400 }
+      );
+    }
+
     saveExpense(expense);
     return NextResponse.json(expense);
   } catch (error) {

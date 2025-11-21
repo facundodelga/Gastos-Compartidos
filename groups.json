@@ -1,18 +1,1 @@
-[
-  {
-    "id": "4f8d07fb-aaad-4e26-8061-76b11c529ad6",
-    "name": "brasil",
-    "baseCurrency": "ARS",
-    "members": [
-      {
-        "id": "04f3c236-3b0c-45ea-8a1e-f6e0fbb6a5c6",
-        "name": "yo"
-      },
-      {
-        "id": "7797a1ac-1921-49c9-bdae-151d1d2e7d56",
-        "name": "jijo"
-      }
-    ],
-    "createdAt": "2025-11-19T23:04:50.603Z"
-  }
-]
+[]

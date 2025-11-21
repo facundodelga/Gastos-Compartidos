@@ -9,7 +9,10 @@ interface CachedRates {
 }
 
 export async function getExchangeRate(from: string, to: string): Promise<number> {
-  if (from === to) return 1;
+  const normalizedFrom = from.toUpperCase();
+  const normalizedTo = to.toUpperCase();
+
+  if (normalizedFrom === normalizedTo) return 1;
 
   try {
     // Check cache first (client-side only)
@@ -18,7 +21,7 @@ export async function getExchangeRate(from: string, to: string): Promise<number>
       if (cached) {
         const { rates, timestamp }: CachedRates = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          const rate = rates[`${from}_${to}`];
+          const rate = rates[`${normalizedFrom}_${normalizedTo}`];
           if (rate) return rate;
         }
       }
@@ -26,7 +29,7 @@ export async function getExchangeRate(from: string, to: string): Promise<number>
 
     // Fetch from API
     const response = await fetch(
-      `https://api.exchangerate.host/latest?base=${from}&symbols=${to}`
+      `https://open.er-api.com/v6/latest/${normalizedFrom}`
     );
     
     if (!response.ok) {
@@ -35,11 +38,11 @@ export async function getExchangeRate(from: string, to: string): Promise<number>
 
     const data: ExchangeRateResponse = await response.json();
     
-    if (!data.success || !data.rates[to]) {
+    if (data.result !== 'success' || !data.rates?.[normalizedTo]) {
       throw new Error('Invalid exchange rate response');
     }
 
-    const rate = data.rates[to];
+    const rate = data.rates[normalizedTo];
 
     // Update cache (client-side only)
     if (typeof window !== 'undefined') {
@@ -48,7 +51,7 @@ export async function getExchangeRate(from: string, to: string): Promise<number>
         ? JSON.parse(cached) 
         : { rates: {}, timestamp: Date.now() };
       
-      cachedData.rates[`${from}_${to}`] = rate;
+      cachedData.rates[`${normalizedFrom}_${normalizedTo}`] = rate;
       cachedData.timestamp = Date.now();
       localStorage.setItem(CACHE_KEY, JSON.stringify(cachedData));
     }

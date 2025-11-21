@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
+import { validateLoginAction } from '@/app/actions/form-validations'
 import { Wallet } from 'lucide-react'
 import Link from 'next/link'
 
@@ -27,6 +28,12 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    const validation = await validateLoginAction({ email, password })
+    if (!validation.success) {
+      setError(validation.error)
+      return
+    }
+
     setLoading(true)
 
     try {

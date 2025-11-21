@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
 import { Wallet } from 'lucide-react'
+import { validateRegisterAction } from '@/app/actions/form-validations'
 import Link from 'next/link'
 
 export default function RegisterPage() {
@@ -38,6 +39,12 @@ export default function RegisterPage() {
 
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres')
+      return
+    }
+
+    const validation = await validateRegisterAction({ name, email, password, confirmPassword })
+    if (!validation.success) {
+      setError(validation.error)
       return
     }
 

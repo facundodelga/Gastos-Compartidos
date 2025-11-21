@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server';
 import { authService } from '@/lib/auth-service';
+import { loginSchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
+    const parsed = loginSchema.safeParse({ email, password });
 
-    if (!email || !password) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { success: false, error: 'Email y contraseña son requeridos' },
+        { success: false, error: parsed.error.issues[0]?.message ?? 'Datos inválidos' },
         { status: 400 }
       );
     }
 
-    const result = authService.login(email, password);
+    const result = authService.login(parsed.data.email, parsed.data.password);
 
     if (result.success && result.user) {
       return NextResponse.json({ success: true, user: result.user });

@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Plus } from 'lucide-react';
 import { Group, Expense } from '@/types';
 import { convertCurrency } from '@/lib/exchange-rate';
+import { validateExpenseAction } from '@/app/actions/form-validations';
 
 interface AddExpenseDialogProps {
   group: Group;
@@ -46,6 +47,7 @@ export function AddExpenseDialog({ group, onAddExpense }: AddExpenseDialogProps)
     group.members.map(m => m.id)
   );
   const [category, setCategory] = useState('Otros');
+  const [formError, setFormError] = useState('');
 
   const handleToggleParticipant = (memberId: string) => {
     setParticipants(prev =>
@@ -57,6 +59,17 @@ export function AddExpenseDialog({ group, onAddExpense }: AddExpenseDialogProps)
 
   const handleSubmit = async () => {
     if (!description.trim() || !amount || participants.length === 0) return;
+
+    setFormError('');
+    const validation = await validateExpenseAction({
+      description: description.trim(),
+      amount,
+    });
+
+    if (!validation.success) {
+      setFormError(validation.error);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -109,6 +122,11 @@ export function AddExpenseDialog({ group, onAddExpense }: AddExpenseDialogProps)
           <DialogTitle>Agregar nuevo gasto</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
+          {formError && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              {formError}
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="description">Descripción</Label>
             <Input
