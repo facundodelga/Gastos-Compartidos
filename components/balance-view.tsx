@@ -6,6 +6,7 @@ import { calculateBalances, calculateSettlements } from '@/lib/balance-calculato
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ArrowRight, TrendingUp, TrendingDown, Check } from 'lucide-react';
+import { formatMoney } from '@/lib/format-number';
 
 interface BalanceViewProps {
   expenses: Expense[];
@@ -50,36 +51,42 @@ export function BalanceView({ expenses, members, baseCurrency }: BalanceViewProp
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {balances.map((balance) => (
-              <div key={balance.memberId} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{balance.memberName}</span>
-                  <span
-                    className={`font-semibold ${
-                      balance.balance > 0.01
-                        ? 'text-green-600 dark:text-green-400'
-                        : balance.balance < -0.01
-                        ? 'text-red-600 dark:text-red-400'
-                        : 'text-muted-foreground'
-                    }`}
-                  >
-                    {balance.balance > 0.01 ? '+' : ''}
-                    {balance.balance.toFixed(2)} {baseCurrency}
-                  </span>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <TrendingUp className="h-3 w-3" />
-                    <span>Pagó: {balance.paid.toFixed(2)}</span>
+            {balances.map((balance) => {
+              const formattedBalance =
+                balance.balance > 0.01
+                  ? `+${formatMoney(balance.balance, baseCurrency)}`
+                  : formatMoney(balance.balance, baseCurrency);
+
+              return (
+                <div key={balance.memberId} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{balance.memberName}</span>
+                    <span
+                      className={`font-semibold ${
+                        balance.balance > 0.01
+                          ? 'text-green-600 dark:text-green-400'
+                          : balance.balance < -0.01
+                          ? 'text-red-600 dark:text-red-400'
+                          : 'text-muted-foreground'
+                      }`}
+                    >
+                      {formattedBalance}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <TrendingDown className="h-3 w-3" />
-                    <span>Debe: {balance.shouldPay.toFixed(2)}</span>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      <span>{formatMoney(balance.paid, baseCurrency)}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <TrendingDown className="h-3 w-3" />
+                      <span>{formatMoney(balance.shouldPay, baseCurrency)}</span>
+                    </div>
                   </div>
+                  <Separator />
                 </div>
-                <Separator />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
@@ -119,9 +126,8 @@ export function BalanceView({ expenses, members, baseCurrency }: BalanceViewProp
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-primary">
-                      {settlement.amount.toFixed(2)}
+                      {formatMoney(settlement.amount, baseCurrency)}
                     </p>
-                    <p className="text-xs text-muted-foreground">{baseCurrency}</p>
                   </div>
                 </div>
               ))}

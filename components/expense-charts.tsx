@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Expense } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { formatNumber, formatCurrency } from '@/lib/format-number';
+import { formatNumber, formatCurrency, formatMoney} from '@/lib/format-number';
 
 interface ExpenseChartsProps {
   expenses: Expense[];
@@ -82,6 +82,9 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
     );
   }
 
+  const totalAll = expensesByPerson.reduce((sum, p) => sum + p.total, 0);
+  const avgAll = expenses.length > 0 ? totalAll / expenses.length : 0;
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {/* Gastos por persona */}
@@ -128,39 +131,39 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={expensesByCategory}
-                cx="40%" // dejar espacio para la leyenda a la derecha
-                cy="50%"
-                labelLine={false}
-                label={false} // No labels sobre el pie
-                outerRadius={90}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {expensesByCategory.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px',
-                }}
-                formatter={(value: number) => formatCurrency(Number(value), baseCurrency)}
-              />
-              <Legend
-                // legend a la derecha, vertical para que no tape el gráfico
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                wrapperStyle={{ right: 0 }}
-                formatter={(value) => value} // muestra el name
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          <PieChart>
+            <Pie
+              data={expensesByCategory}
+              cx="40%" // dejar espacio para la leyenda a la derecha
+              cy="50%"
+              labelLine={false}
+              label={false} // No labels sobre el pie
+              outerRadius={90}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {expensesByCategory.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'hsl(var(--card))',
+                border: '1px solid hsl(var(--border))',
+                borderRadius: '8px',
+              }}
+              formatter={(value: number) => formatCurrency(Number(value), baseCurrency)}
+            />
+            <Legend
+              // legend a la derecha, vertical para que no tape el gráfico
+              layout="vertical"
+              verticalAlign="middle"
+              align="right"
+              wrapperStyle={{ right: 0 }}
+              formatter={(value) => value} // muestra el name
+            />
+          </PieChart>
+        </ResponsiveContainer>
         </CardContent>
       </Card>
 
@@ -191,11 +194,11 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                     <tr key={index} className="border-b last:border-0">
                       <td className="py-3 px-4">{person.name}</td>
                       <td className="text-right py-3 px-4 font-medium">
-                        {person.total.toFixed(2)} {baseCurrency}
+                       {formatMoney(person.total, baseCurrency)}
                       </td>
                       <td className="text-right py-3 px-4">{count}</td>
                       <td className="text-right py-3 px-4">
-                        {average.toFixed(2)} {baseCurrency}
+                        {formatMoney(average, baseCurrency)}
                       </td>
                     </tr>
                   );
@@ -205,11 +208,11 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                 <tr className="font-bold bg-muted">
                   <td className="py-3 px-4">Total</td>
                   <td className="text-right py-3 px-4">
-                    {expensesByPerson.reduce((sum, p) => sum + p.total, 0).toFixed(2)} {baseCurrency}
+                    {formatMoney(totalAll, baseCurrency)}
                   </td>
                   <td className="text-right py-3 px-4">{expenses.length}</td>
                   <td className="text-right py-3 px-4">
-                    {(expensesByPerson.reduce((sum, p) => sum + p.total, 0) / expenses.length).toFixed(2)} {baseCurrency}
+                     {formatMoney(avgAll, baseCurrency)}
                   </td>
                 </tr>
               </tfoot>

@@ -13,6 +13,8 @@ import { ArrowLeft, Users, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 import { AuthGuard } from '@/components/auth-guard';
 import { Navbar } from '@/components/navbar';
+import { formatMoney } from '@/lib/format-number';
+
 
 export default function GroupPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -146,7 +148,7 @@ export default function GroupPage({ params }: { params: Promise<{ id: string }> 
                   <span className="text-sm">Total gastado</span>
                 </div>
                 <p className="text-2xl font-bold">
-                  {totalExpenses.toFixed(2)} {group.baseCurrency}
+                  {formatMoney(totalExpenses, group.baseCurrency)}
                 </p>
               </div>
             </div>
