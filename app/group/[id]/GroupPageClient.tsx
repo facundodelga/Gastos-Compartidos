@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { AuthGuard } from '@/components/auth-guard';
 import { Navbar } from '@/components/navbar';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
+import { formatMoney } from '@/lib/format-number';
 type Props = {
   groupId: string;          
   initialGroup: Group;
@@ -146,7 +146,9 @@ export default function GroupPageClient({ groupId, initialGroup, initialExpenses
                   <span className="text-sm">Total gastado</span>
                 </div>
                 <p className="text-2xl font-bold">
-                  {totalExpenses.toFixed(2)} {group.baseCurrency}
+                  <p className="text-2xl font-bold">
+                  {formatMoney(totalExpenses, group.baseCurrency)}
+                </p>
                 </p>
               </div>
             </div>

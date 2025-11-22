@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { formatMoney } from '@/lib/format-number';
 
 interface ExpenseListProps {
   expenses: Expense[];
@@ -42,10 +43,10 @@ export function ExpenseList({ expenses, members, baseCurrency, onDeleteExpense }
               </div>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">
-                  {expense.amount.toFixed(2)} {expense.currency}
+                  {formatMoney(expense.amount, expense.currency)}
                   {expense.currency !== baseCurrency && (
                     <span className="ml-1">
-                      (≈ {expense.amountInBaseCurrency.toFixed(2)} {baseCurrency})
+                      (≈ {formatMoney(expense.amountInBaseCurrency, baseCurrency)})
                     </span>
                   )}
                 </span>
