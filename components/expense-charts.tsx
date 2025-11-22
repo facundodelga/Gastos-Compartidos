@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { Expense } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { formatNumber, formatCurrency } from '@/lib/format-number';
 
 interface ExpenseChartsProps {
   expenses: Expense[];
@@ -100,6 +101,7 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
               <YAxis 
                 className="text-xs"
                 tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                tickFormatter={(value: number) => formatNumber(Number(value))}
               />
               <Tooltip
                 contentStyle={{
@@ -107,7 +109,7 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px',
                 }}
-                formatter={(value: number) => `${value.toFixed(2)} ${baseCurrency}`}
+                formatter={(value: number) => formatCurrency(Number(value), baseCurrency)}
               />
               <Bar dataKey="total" radius={[8, 8, 0, 0]}>
                 {expensesByPerson.map((entry, index) => (
@@ -132,7 +134,7 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={({ name, percent = 0 }) => `${name} (${(percent * 100).toFixed(0)}%)`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -147,7 +149,7 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px',
                 }}
-                formatter={(value: number) => `${value.toFixed(2)} ${baseCurrency}`}
+                formatter={(value: number) => formatCurrency(Number(value), baseCurrency)}
               />
             </PieChart>
           </ResponsiveContainer>
