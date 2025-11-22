@@ -11,12 +11,23 @@ interface ExpenseChartsProps {
   baseCurrency: string;
 }
 
-const COLORS = [
+/*const COLORS = [
   'hsl(var(--chart-1))',
   'hsl(var(--chart-2))',
   'hsl(var(--chart-3))',
   'hsl(var(--chart-4))',
   'hsl(var(--chart-5))',
+];*/
+const COLORS = [
+  "#6366f1", // Indigo
+  "#10b981", // Emerald
+  "#f59e0b", // Amber
+  "#ef4444", // Red
+  "#3b82f6", // Blue
+  "#8b5cf6", // Violet
+  "#14b8a6", // Teal
+  "#ec4899", // Pink
+  "#84cc16", // Lime
 ];
 
 export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseChartsProps) {
@@ -33,7 +44,11 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
         name,
         total: Math.round(total * 100) / 100,
       }))
-      .sort((a, b) => b.total - a.total);
+      .sort((a, b) => b.total - a.total)
+      .map((entry, index) => ({
+        ...entry,
+        fill: COLORS[index % COLORS.length],
+      }));
   }, [expenses, members]);
 
   const expensesByCategory = useMemo(() => {
@@ -94,7 +109,11 @@ export function ExpenseCharts({ expenses, members, baseCurrency }: ExpenseCharts
                 }}
                 formatter={(value: number) => `${value.toFixed(2)} ${baseCurrency}`}
               />
-              <Bar dataKey="total" fill="hsl(var(--chart-1))" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="total" radius={[8, 8, 0, 0]}>
+                {expensesByPerson.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </CardContent>

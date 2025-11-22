@@ -33,5 +33,12 @@
     "name": "a a",
     "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
     "createdAt": "2025-11-21T18:22:57.246Z"
+  },
+  {
+    "id": "064f690e-c39b-416e-ab90-679d96be2e73",
+    "email": "test@hotmail.com",
+    "name": "test",
+    "password": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae",
+    "createdAt": "2025-11-21T22:11:58.874Z"
   }
 ]

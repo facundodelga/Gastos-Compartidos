@@ -15,5 +15,26 @@
     "baseCurrency": "ARS",
     "ownerId": "be3df62f-4733-4158-b64f-e637417abdc2",
     "createdAt": "2025-11-21T18:23:11.886Z"
+  },
+  {
+    "name": "grupo bar",
+    "members": [
+      {
+        "id": "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+        "name": "test2"
+      },
+      {
+        "id": "8c1b5aa8-e795-4864-91e7-56e8b1490d2d",
+        "name": "otro"
+      },
+      {
+        "id": "f1387870-a67b-42c0-885e-dea9f7487619",
+        "name": "pepe"
+      }
+    ],
+    "id": "8a9194d9-6661-415f-9cc5-a963f7ff5d18",
+    "baseCurrency": "USD",
+    "ownerId": "064f690e-c39b-416e-ab90-679d96be2e73",
+    "createdAt": "2025-11-21T22:13:23.176Z"
   }
 ]

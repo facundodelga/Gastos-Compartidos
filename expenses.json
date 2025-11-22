@@ -73,5 +73,67 @@
     ],
     "category": "Entretenimiento",
     "date": "2025-11-21T18:28:44.897Z"
+  },
+  {
+    "id": "fa91122f-9dff-440a-8afc-945a6d372b60",
+    "groupId": "8a9194d9-6661-415f-9cc5-a963f7ff5d18",
+    "description": "uber",
+    "amount": 8500,
+    "currency": "USD",
+    "amountInBaseCurrency": 8500,
+    "paidBy": "8c1b5aa8-e795-4864-91e7-56e8b1490d2d",
+    "participants": [
+      "8c1b5aa8-e795-4864-91e7-56e8b1490d2d",
+      "f1387870-a67b-42c0-885e-dea9f7487619"
+    ],
+    "category": "Transporte",
+    "date": "2025-11-21T22:14:19.809Z"
+  },
+  {
+    "id": "d09e6f9d-52e6-46bb-b267-544a76293adb",
+    "groupId": "8a9194d9-6661-415f-9cc5-a963f7ff5d18",
+    "description": "cerveza",
+    "amount": 3500,
+    "currency": "USD",
+    "amountInBaseCurrency": 3500,
+    "paidBy": "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+    "participants": [
+      "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+      "8c1b5aa8-e795-4864-91e7-56e8b1490d2d",
+      "f1387870-a67b-42c0-885e-dea9f7487619"
+    ],
+    "category": "Comida",
+    "date": "2025-11-21T22:16:18.047Z"
+  },
+  {
+    "id": "b247ff6a-13f8-4ea4-acec-d6dfe9b799d0",
+    "groupId": "8a9194d9-6661-415f-9cc5-a963f7ff5d18",
+    "description": "tete",
+    "amount": 1200,
+    "currency": "USD",
+    "amountInBaseCurrency": 1200,
+    "paidBy": "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+    "participants": [
+      "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+      "8c1b5aa8-e795-4864-91e7-56e8b1490d2d",
+      "f1387870-a67b-42c0-885e-dea9f7487619"
+    ],
+    "category": "Compras",
+    "date": "2025-11-21T22:25:39.103Z"
+  },
+  {
+    "id": "24b32f48-7e07-4f4e-a1fe-dcbb0bc84f16",
+    "groupId": "8a9194d9-6661-415f-9cc5-a963f7ff5d18",
+    "description": "test",
+    "amount": 2132,
+    "currency": "USD",
+    "amountInBaseCurrency": 2132,
+    "paidBy": "f1387870-a67b-42c0-885e-dea9f7487619",
+    "participants": [
+      "f0d2b4a7-2e5d-4337-80ec-de813ae3e94c",
+      "8c1b5aa8-e795-4864-91e7-56e8b1490d2d"
+    ],
+    "category": "Transporte",
+    "date": "2025-11-22T00:13:13.900Z"
   }
 ]
