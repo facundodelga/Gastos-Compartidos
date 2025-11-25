@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "4807bd0c-df8c-4f70-b00b-1db0edab5d2b",
+    "groupId": "6c166bdc-6c90-40e1-aeec-d3890554c0ed",
+    "description": "merienda",
+    "amount": 5000,
+    "currency": "ARS",
+    "amountInBaseCurrency": 3.5300000000000002,
+    "paidBy": "316dc164-9d41-4c2e-a119-75b00cc755b0",
+    "participants": [
+      "316dc164-9d41-4c2e-a119-75b00cc755b0",
+      "14a6a821-bfae-4517-b18b-514aa75d8627"
+    ],
+    "category": "Otros",
+    "date": "2025-11-25T00:51:40.308Z"
+  },
+  {
+    "id": "6bf672e1-38ce-490c-b5d0-e93992cf8cea",
+    "groupId": "6c166bdc-6c90-40e1-aeec-d3890554c0ed",
+    "description": "Desayuno",
+    "amount": 1000,
+    "currency": "EUR",
+    "amountInBaseCurrency": 1153.162,
+    "paidBy": "316dc164-9d41-4c2e-a119-75b00cc755b0",
+    "participants": [
+      "316dc164-9d41-4c2e-a119-75b00cc755b0",
+      "14a6a821-bfae-4517-b18b-514aa75d8627"
+    ],
+    "category": "Otros",
+    "date": "2025-11-25T00:52:01.893Z"
+  }
+]

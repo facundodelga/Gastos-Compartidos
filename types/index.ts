@@ -42,9 +42,8 @@ export interface Settlement {
 }
 
 export interface ExchangeRateResponse {
-  result: string;
-  base_code: string;
-  rates: {
-    [key: string]: number;
-  };
+  success: boolean;
+  base: string;
+  date: string;
+  rates: { [key: string]: number };
 }

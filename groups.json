@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "name": "asdasdasd",
+    "members": [
+      {
+        "id": "316dc164-9d41-4c2e-a119-75b00cc755b0",
+        "name": "dasdasd"
+      },
+      {
+        "id": "14a6a821-bfae-4517-b18b-514aa75d8627",
+        "name": "asdasda"
+      }
+    ],
+    "id": "6c166bdc-6c90-40e1-aeec-d3890554c0ed",
+    "baseCurrency": "USD",
+    "ownerId": "b4fbe7ae-8ab9-46c5-b151-be5ae35f7949",
+    "createdAt": "2025-11-25T00:47:47.565Z"
+  }
+]
