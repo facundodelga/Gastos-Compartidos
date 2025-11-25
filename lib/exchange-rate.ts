@@ -48,7 +48,7 @@ export async function getExchangeRate(from: string, to: string): Promise<number>
     return rate;
   } catch (error) {
     console.error('Error fetching exchange rate:', error);
-    return 1; // Fallback to 1:1 rate
+    throw new Error('exchange-rate-unavailable');
   }
 }
 

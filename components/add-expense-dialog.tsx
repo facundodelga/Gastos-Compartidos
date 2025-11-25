@@ -103,6 +103,10 @@ export function AddExpenseDialog({ group, onAddExpense }: AddExpenseDialogProps)
       setCategory('Otros');
     } catch (error) {
       console.error('Error creating expense:', error);
+      if (error instanceof Error && error.message === 'exchange-rate-unavailable') {
+        alert('No se pudo obtener el tipo de cambio, intentalo de nuevo mas tarde.');
+        return;
+      }
       alert('Error al crear el gasto. Por favor intenta nuevamente.');
     } finally {
       setLoading(false);
